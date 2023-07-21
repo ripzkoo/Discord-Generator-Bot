@@ -9,3 +9,6 @@
 # Need to get accounts for your gen?
 Join hell gen!
 https://discord.gg/generators
+
+# Replit
+https://replit.com/@zkoolol/Discord-Account-Generator-Bot?v=1
