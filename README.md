@@ -3,12 +3,15 @@
 # Setup
 1. Add your own bot to your server, with application.commands
 2. Go to main.py, and change the channel ID. (server name and logo too)
-3. Go to secrets in your repl, and add a secret named token. Value is your discord bot's token
+3. Go to the last line of the code, and add your token.
 4. Run
 
 # Need to get accounts for your gen?
 Join hell gen!
 https://discord.gg/generators
 
+# Tutorial
+https://youtu.be/CRNcmRjJvBw
+
 # Replit
-https://replit.com/@zkoolol/Discord-Account-Generator-Bot?v=1
+https://replit.com/@ripzkoo/Discord-Acc-Gen-Bot-SLASH-COMMANDS?v=1
