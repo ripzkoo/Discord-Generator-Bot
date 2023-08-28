@@ -1,22 +1,34 @@
-import nextcord, os, random, datetime
+# discord.gg/generators
+
+import nextcord, os, random, datetime, asyncio
 from nextcord.ext import commands
 
-free_gen_channel = 28343285729 # Channel ID here
+free_gen_channel = 5374638235 # Channel ID here
+
+free_cooldowns = {}
 
 intents = nextcord.Intents.all()
 bot = commands.Bot(intents=intents, help_command=None)
 
 server_name = "ENTER YOUR SERVER NAME HERE"
-server_logo = "YOUR SERVER'S LOGO LINK HERE"
+server_logo = "ENTER YOUR SERVER'S LOGO LINK HERE"
 
 @bot.event
 async def on_ready():
     await bot.change_presence(activity=nextcord.Activity(type=nextcord.ActivityType.playing,name=server_name))
+    print("Running")
 
 @bot.slash_command(name="gen", description="Generate free accounts!")
-
 async def gen(inter, stock):
     user = inter.user
+    user_id = inter.user.id
+
+    if user_id in free_cooldowns:
+        remaining_cooldown = free_cooldowns[user_id]
+        embed = nextcord.Embed(title="Cooldown", description=f"You still have {remaining_cooldown} seconds remaining.",
+                               color=nextcord.Color.red())
+        await inter.send(embed=embed, ephemeral=True)
+        return
     if inter.channel.id != free_gen_channel:
         embed = nextcord.Embed(title="Wrong Channel! Use <#free_gen_channel>", color=nextcord.Color.red())
         await inter.send(embed=embed, ephemeral=True)
@@ -47,21 +59,25 @@ async def gen(inter, stock):
     embed.add_field(name="Username:", value=f"```{str(User)}```")
     embed.add_field(name="Password:", value=f"```{str(Password)}```")
     embed.add_field(name="Combo:", value=f"```{str(User)}:{str(Password)}```", inline=False) 
-    
     await user.send(embed=embed)
     
     name = (stock[0].upper() + stock[1:].lower()).replace(".txt", "")
     
-    embed1 = nextcord.Embed(title=f"{name} Account Generated!", description="> Also check your DMs for your account too!", color=nextcord.Color.green())
-    embed1.add_field(name="Username:", value=f"```{str(User)}```")
-    embed1.add_field(name="Password:", value=f"```{str(Password)}```")
-    embed1.add_field(name="Combo:", value=f"```{str(User)}:{str(Password)}```", inline=False)
+    embed1 = nextcord.Embed(title=f"{name} Account Generated!", description="> Check your DMs for your account!", color=nextcord.Color.green())
     embed1.set_footer(text=server_name, icon_url=server_logo)
     embed1.set_thumbnail(url=server_logo)
-    await inter.send(embed=embed, ephemeral=True) 
+    await inter.send(embed=embed1) 
     lines.remove(account)
     with open(f"freestock//{stock}", "w", encoding='utf-8') as file:
         file.write("\n".join(lines))
+
+    free_cooldowns[user_id] = 30
+    await asyncio.sleep(1)
+    while free_cooldowns[user_id] > 0:
+        free_cooldowns[user_id] -= 1
+        await asyncio.sleep(1)
+
+    del free_cooldowns[user_id]
 
 @bot.slash_command(name="stock", description="View free stock!")
 async def freestock(inter: nextcord.Interaction):   
@@ -87,4 +103,6 @@ async def help(ctx):
   
     await ctx.send(embed=embed)
 
-bot.run("") # token here
+bot.run("")
+
+# discord.gg/generators
