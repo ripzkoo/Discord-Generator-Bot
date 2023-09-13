@@ -8,7 +8,7 @@
 
 # Need to get accounts for your gen?
 Join hell gen!
-https://discord.gg/generators
+https://discord.gg/accountgenerator
 
 # Tutorial
 https://youtu.be/CRNcmRjJvBw
